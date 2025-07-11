@@ -1,1 +1,10 @@
-export class CreateNotificationDto {}
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class CreateNotificationDto {
+  @IsString({ message: 'O ID da mensagem deve ser (GUID/UUID.' })
+  mensagemId: string;
+
+  @IsNotEmpty({ message: 'O conteúdo da mensagem não pode estar vazio.' })
+  @IsString({ message: 'O conteúdo da mensagem deve ser uma string.' })
+  conteudoMensagem: string;
+}
