@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { rmqClient } from './config/rabbitmq';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
-  imports: [
-    NotificationsModule,
-    rmqClient('fila.notificacao.entrada.elber'),
-    rmqClient('fila.notificacao.status.elber'),
-  ],
+  imports: [NotificationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,7 +1,8 @@
 import { Logger, Module } from '@nestjs/common';
 import { rmqClient } from '../../config/rabbitmq';
-import { NotificationDataService } from './notification-data.service';
+import { NotificationStatusService } from './notification-status.service';
 import { NotificationsController } from './notifications.controller';
+import { NotificationGateway } from './notifications.gateway';
 import { NotificationsService } from './notifications.service';
 
 @Module({
@@ -10,6 +11,11 @@ import { NotificationsService } from './notifications.service';
     rmqClient('fila.notificacao.status.elber'),
   ],
   controllers: [NotificationsController],
-  providers: [NotificationsService, Logger, NotificationDataService],
+  providers: [
+    NotificationsService,
+    Logger,
+    NotificationStatusService,
+    NotificationGateway,
+  ],
 })
 export class NotificationsModule {}

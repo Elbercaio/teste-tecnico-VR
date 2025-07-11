@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Notificações</h2>
+
+  <div class="input-field">
+    <input
+      type="text"
+      [(ngModel)]="conteudoMensagem"
+      placeholder="Digite sua mensagem..."
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()" [disabled]="!conteudoMensagem.trim()">
+      Enviar Notificação
+    </button>
+  </div>
+
+  <ul class="notification-list">
+    @for( notification of notifications; track notification.mensagemId) {
+    <li>
+      <div class="notification">
+        <div class="notification-header">
+          <strong>Id: {{ notification.mensagemId }}</strong> -
+          <span>Status: {{ notification.status }}</span>
+        </div>
+        <span>Conteúdo: {{ notification.conteudoMensagem }}</span>
+      </div>
+    </li>
+    }
+  </ul>
+</div>

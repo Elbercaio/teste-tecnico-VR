@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class NotificationDataService {
+export class NotificationStatusService {
   private readonly notificationMap = new Map<string, string>();
 
   createNotification(messageId: string, status: string): void {

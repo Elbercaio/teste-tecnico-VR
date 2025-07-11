@@ -17,6 +17,7 @@ import { NotificationStatusInterface } from './interfaces/notification-status.in
 import { NotificationsService } from './notifications.service';
 
 @Controller('notificar')
+@UseInterceptors(ClassSerializerInterceptor)
 export class NotificationsController {
   constructor(private readonly service: NotificationsService) {}
 
@@ -26,7 +27,6 @@ export class NotificationsController {
     return this.service.create(createNotificationDto);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @MessagePattern('fila.notificacao.entrada.elber')
   async handleInputQueue(
     @Payload() payload: CreateNotificationDto,
@@ -35,6 +35,7 @@ export class NotificationsController {
     console.log('\n \n NotificationsController \n payload:', payload);
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
+    console.log('\n \n NotificationsController \n originalMsg:', originalMsg);
     try {
       await this.service.handleInputMessage(payload);
       channel.ack(originalMsg);
@@ -43,7 +44,6 @@ export class NotificationsController {
     }
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @MessagePattern('fila.notificacao.status.elber')
   handletatusQueue(
     @Payload() payload: NotificationStatusInterface,

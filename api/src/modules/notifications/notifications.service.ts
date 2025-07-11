@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { NotificationStatusInterface } from './interfaces/notification-status.interface';
-import { NotificationDataService } from './notification-data.service';
+import { NotificationStatusService } from './notification-status.service';
 
 @Injectable()
 export class NotificationsService {
@@ -10,7 +10,7 @@ export class NotificationsService {
   constructor(
     @Inject('fila.notificacao.entrada.elber') private inputQueue: ClientProxy,
     @Inject('fila.notificacao.status.elber') private statusQueue: ClientProxy,
-    private readonly dataService: NotificationDataService,
+    private readonly dataService: NotificationStatusService,
   ) {}
 
   create(createNotificationDto: CreateNotificationDto): string | undefined {
