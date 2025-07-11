@@ -1,0 +1,53 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: ci/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./api/.env
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+    develop:
+      watch:
+        - action: rebuild
+          path: ./api
+
+  app:
+    build:
+      context: ./app
+      dockerfile: ci/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+    develop:
+      watch:
+        - action: rebuild
+          path: ./app
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_VHOST=vhost
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - app-network
+
+volumes:
+  rabbitmq-data:
+
+networks:
+  app-network:
+    driver: bridge
