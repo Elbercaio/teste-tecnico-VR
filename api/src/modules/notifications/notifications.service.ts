@@ -6,8 +6,8 @@ import { NotificationDataService } from './notification-data.service';
 
 @Injectable()
 export class NotificationsService {
+  private readonly logger = new Logger(NotificationsService.name);
   constructor(
-    private readonly logger = new Logger(NotificationsService.name),
     @Inject('fila.notificacao.entrada.elber') private inputQueue: ClientProxy,
     @Inject('fila.notificacao.status.elber') private statusQueue: ClientProxy,
     private readonly dataService: NotificationDataService,
