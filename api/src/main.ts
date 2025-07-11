@@ -8,6 +8,7 @@ async function bootstrap() {
   const globalPrefix = 'api';
   const port = process.env.API_PORT || 3000;
   app.connectMicroservice(rmqConfig('fila.notificacao.entrada.elber'));
+  app.connectMicroservice(rmqConfig('fila.notificacao.status.elber'));
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(
     new ValidationPipe({
