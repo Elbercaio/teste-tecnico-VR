@@ -28,8 +28,11 @@ export class NotificationsController {
   ) {}
   @Get(':mensagemId')
   @HttpCode(202)
-  findOne(@Param('mensagemId') mensagemId: string) {
-    return this.statusService.getNotification(mensagemId);
+  findOne(@Param('mensagemId') mensagemId: string): {
+    status: string | undefined;
+  } {
+    const status = this.statusService.getNotification(mensagemId);
+    return { status };
   }
 
   @Post()
