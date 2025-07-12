@@ -60,19 +60,19 @@ export class NotificacaoComponent implements OnInit, OnDestroy {
       mensagemId: id,
       conteudoMensagem: this.conteudoMensagem,
     };
-    this.service.sendMessage(notification).subscribe(() => {
+    this.service.sendMessage(notification).subscribe(
       () => {
         this.notifications.unshift({
           ...notification,
           status: NotificationStatusEnum.PENDENTE,
         });
-      };
+      },
       (error: Error) =>
         console.error(
           `Erro ao enviar mensagem ${this.conteudoMensagem}:`,
           error
-        );
-    });
+        )
+    );
     this.conteudoMensagem = '';
   }
 
