@@ -2,7 +2,9 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   HttpCode,
+  Param,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,12 +16,21 @@ import {
 } from '@nestjs/microservices';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { NotificationStatusInterface } from './interfaces/notification-status.interface';
+import { NotificationStatusService } from './notification-status.service';
 import { NotificationsService } from './notifications.service';
 
 @Controller('notificar')
 @UseInterceptors(ClassSerializerInterceptor)
 export class NotificationsController {
-  constructor(private readonly service: NotificationsService) {}
+  constructor(
+    private readonly service: NotificationsService,
+    private readonly statusService: NotificationStatusService,
+  ) {}
+  @Get(':mensagemId')
+  @HttpCode(202)
+  findOne(@Param('mensagemId') mensagemId: string) {
+    return this.statusService.getNotification(mensagemId);
+  }
 
   @Post()
   @HttpCode(202)
@@ -32,15 +43,12 @@ export class NotificationsController {
     @Payload() payload: CreateNotificationDto,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log('\n \n NotificationsController \n payload:', payload);
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
-    console.log('\n \n NotificationsController \n originalMsg:', originalMsg);
     try {
       await this.service.handleInputMessage(payload);
-      channel.ack(originalMsg);
     } catch {
-      channel.nack(originalMsg);
+      channel.nack(originalMsg, false, false);
     }
   }
 
@@ -49,14 +57,12 @@ export class NotificationsController {
     @Payload() payload: NotificationStatusInterface,
     @Ctx() context: RmqContext,
   ): void {
-    console.log('\n \n NotificationsController \n payload:', payload);
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     try {
       this.service.handleStatusMessage(payload);
-      channel.ack(originalMsg);
     } catch {
-      channel.nack(originalMsg);
+      channel.nack(originalMsg, false, false);
     }
   }
 }

@@ -4,15 +4,15 @@ import { Injectable } from '@nestjs/common';
 export class NotificationStatusService {
   private readonly notificationMap = new Map<string, string>();
 
-  createNotification(messageId: string, status: string): void {
-    this.notificationMap.set(messageId, status);
+  createNotification(mensagemId: string, status: string): void {
+    this.notificationMap.set(mensagemId, status);
   }
 
-  getNotification(messageId: string): string | undefined {
-    return this.notificationMap.get(messageId);
+  getNotification(mensagemId: string): string | undefined {
+    return this.notificationMap.get(mensagemId);
   }
 
-  deleteNotification(messageId: string): boolean {
-    return this.notificationMap.delete(messageId);
+  deleteNotification(mensagemId: string): boolean {
+    return this.notificationMap.delete(mensagemId);
   }
 }

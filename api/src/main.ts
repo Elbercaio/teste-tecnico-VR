@@ -2,12 +2,6 @@ import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { rmqConfig } from './config/rabbitmq';
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  require('dotenv').config({ path: '.env' });
-} catch (w) {
-  console.warn(w);
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

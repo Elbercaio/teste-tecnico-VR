@@ -13,10 +13,15 @@ export class NotificacaoService {
   sendMessage(
     payload: NotificationInterface
   ): Observable<{ mensagemId: string }> {
-    console.log(
-      '\n \n NotificacaoService \n this.baseUrl :',
-      `${this.baseUrl}/v1/notificar`
+    return this.http.post<{ mensagemId: string }>(
+      `${this.baseUrl}/v1/notificar`,
+      payload
     );
+  }
+
+  getMessage(
+    payload: NotificationInterface
+  ): Observable<{ mensagemId: string }> {
     return this.http.post<{ mensagemId: string }>(
       `${this.baseUrl}/v1/notificar`,
       payload

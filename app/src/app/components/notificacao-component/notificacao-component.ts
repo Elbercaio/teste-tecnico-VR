@@ -12,7 +12,7 @@ import { NotificacaoService } from './services/notificacao.service';
   imports: [FormsModule],
   templateUrl: './notificacao-component.html',
   styleUrl: './notificacao-component.scss',
-}) 
+})
 export class NotificacaoComponent {
   conteudoMensagem: string = '';
   notifications: NotificationInterface[] = [];
@@ -25,10 +25,13 @@ export class NotificacaoComponent {
       conteudoMensagem: this.conteudoMensagem,
     };
     this.service.sendMessage(notification).subscribe(() => {
-      this.notifications.unshift({
-        ...notification,
-        status: NotificationStatusEnum.PENDENTE,
-      });
+      () => {
+        this.notifications.unshift({
+          ...notification,
+          status: NotificationStatusEnum.PENDENTE,
+        });
+      };
+      (error: Error) => console.error(error);
     });
     this.conteudoMensagem = '';
   }

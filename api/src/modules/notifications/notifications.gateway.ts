@@ -25,14 +25,14 @@ export class NotificationGateway {
   @SubscribeMessage('notification')
   generateReport(
     @ConnectedSocket() client: Socket,
-    @MessageBody() body: { messageId: string },
+    @MessageBody() body: { mensagemId: string },
   ): void {
     try {
-      const status = this.service.getNotification(body.messageId);
+      const status = this.service.getNotification(body.mensagemId);
 
-      client.emit('notification-response', status);
+      client.emit('notification-response', { status });
     } catch (error) {
-      client.emit('notification-report-error', {
+      client.emit('notification-error', {
         error,
       });
     }
